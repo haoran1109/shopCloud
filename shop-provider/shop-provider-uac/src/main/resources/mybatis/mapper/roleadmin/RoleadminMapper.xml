@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+【】对象关系映射 配置 
+ @author AutoCode 940279663@qq.com
+ @date 2019-08-09 11:36:00
+ -->
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.shop.dao.roleadmin.RoleadminDao">
+
+	<resultMap id="roleadminResultMap" type="com.shop.entity.roleadmin.Roleadmin">
+		<id property="id" column="id" />
+       <result property="createdTime" column="created_time" />
+       <result property="adminId" column="admin_id" />
+       <result property="roleId" column="role_id" />
+	</resultMap>
+	<resultMap id="mapResultMap"  type="java.util.HashMap" extends="roleadminResultMap"></resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="roleadminResultMap"></resultMap>
+	
+	
+	<insert id="insert" parameterType="com.shop.entity.roleadmin.Roleadmin" useGeneratedKeys="true" keyProperty="id" >
+	   insert into roleadmin (
+	     id,
+	     created_time,
+	     admin_id,
+	     role_id
+	   )values (
+	     #{id},
+	     #{createdTime},
+	     #{adminId},
+	     #{roleId}
+	   )
+	</insert>
+
+	<update id="update" parameterType="com.shop.entity.roleadmin.Roleadmin">
+		update roleadmin
+		<set>
+			<if test="id != null">
+				id=#{id},
+			</if>
+			<if test="createdTime != null">
+				created_time=#{createdTime},
+			</if>
+			<if test="adminId != null">
+				admin_id=#{adminId},
+			</if>
+			<if test="roleId != null">
+				role_id=#{roleId},
+			</if>
+		</set>
+		<where>
+			id=#{id} 
+		</where>
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     roleadmin 
+	   where 
+	    id=#{id} 
+	</delete>
+
+	<select id="selectObject" parameterType="map" resultMap="roleadminResultMap">
+	   select 
+	    id,
+	    created_time,
+	    admin_id,
+	    role_id
+	   from roleadmin
+	   where 
+	    id=#{id} 
+	</select>
+
+	<select id="getRolesByUserId" parameterType="map" resultType="String">
+	   SELECT
+			t2 .`name`
+		FROM
+			roleadmin t1
+		LEFT  JOIN  role t2 ON t1.role_id = t2.id
+		where t1.admin_id=#{id}
+	</select>
+
+
+
+
+	<select id="selectObjectList" parameterType="map" resultMap="roleadminResultMap">
+	   select 
+	     id,
+	     created_time,
+	     admin_id,
+	     role_id
+	   from roleadmin
+	   <where>
+	     <if test="id != null">
+	        id=#{id}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="adminId != null">
+	        and admin_id=#{adminId}
+	     </if>
+	     <if test="roleId != null">
+	        and role_id=#{roleId}
+	     </if>
+	   </where>
+	</select>
+
+	<select id="selectMap" parameterType="map" resultMap="mapResultMap">
+	   select 
+	    id,
+	    created_time,
+	    admin_id,
+	    role_id
+	   from roleadmin
+	   where 
+	    id=#{id} 
+	</select>
+
+	<select id="selectMapList" parameterType="map" resultMap="mapResultMap">
+	   select 
+	     id,
+	     created_time,
+	     admin_id,
+	     role_id
+	   from roleadmin
+	   <where>
+	     <if test="id != null">
+	        id=#{id}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="adminId != null">
+	        and admin_id=#{adminId}
+	     </if>
+	     <if test="roleId != null">
+	        and role_id=#{roleId}
+	     </if>
+	   </where>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     id,
+	     created_time,
+	     admin_id,
+	     role_id
+	<include refid="pageCondition" />
+	limit #{offset},#{rows}
+	</select>
+
+	<select id="pageCount" parameterType="map" resultType="int">
+	   select count(1)
+	   <include refid="pageCondition" />
+	</select>
+
+	<sql id="pageCondition">
+	   from roleadmin
+	   <where>
+	     <if test="id != null">
+	        id=#{id}
+	     </if>
+	     <if test="createdTime != null">
+	        and created_time=#{createdTime}
+	     </if>
+	     <if test="adminId != null">
+	        and admin_id=#{adminId}
+	     </if>
+	     <if test="roleId != null">
+	        and role_id=#{roleId}
+	     </if>
+	   </where>
+	</sql>
+
+	
+</mapper> 

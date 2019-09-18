@@ -1,0 +1,41 @@
+server:
+    port: 8083
+spring:
+    application:
+        name: shop-gateway
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://shop:123456@eurekaserver2:8082/eureka/,http://shop:123456@eurekaserver1:8081/eureka/
+security:
+    oauth2:
+        client:
+            access-token-uri: http://localhost:8080/oauth/token
+            user-authorization-uri: http://localhost:8080/oauth/authorize
+        resource:
+            prefer-token-info: false
+            user-info-uri: http://localhost:8083/uaa/user/me
+zuul:
+    add-proxy-headers: true
+    routes:
+        order:
+            path: /order/**
+            sensitiveHeaders: ''
+            serviceId: shop-order
+        user:
+            path: /uaa/**
+            sensitiveHeaders: ''
+            serviceId: shop-user
+    host:
+        connect-timeout-millis: 10000
+        socket-timeout-millis: 60000
+hystrix:
+    command:
+        default:
+            execution:
+                isolation:
+                    thread:
+                        timeoutInMilliseconds: 60000
+
+
+

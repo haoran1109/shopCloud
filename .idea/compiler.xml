@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="common-base" />
+        <module name="common-core" />
+        <module name="common-feign" />
+        <module name="common-security-app" />
+        <module name="common-security-authorize" />
+        <module name="common-security-core" />
+        <module name="common-util" />
+        <module name="shop-eureka" />
+        <module name="shop-gateway" />
+        <module name="shop-provider-omc" />
+        <module name="shop-provider-uac" />
+        <module name="uac-provider-api" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>

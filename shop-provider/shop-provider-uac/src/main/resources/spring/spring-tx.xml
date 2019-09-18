@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans     
+	        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	        http://www.springframework.org/schema/context
+	        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	        http://www.springframework.org/schema/aop
+	        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+	        http://www.springframework.org/schema/tx
+	        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+			http://www.springframework.org/schema/task
+			http://www.springframework.org/schema/task/spring-task-4.1.xsd
+			"
+	>
+   
+    <!-- 2、配置事物属性 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="add*"      propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="save*"     propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="insert*"   propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="create*"   propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="remove*"   propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="delete*"   propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="update*"   propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="change*"   propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="modify*"   propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="edit*"     propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="cancel*"   propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="confirm*"  propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="*"         propagation="SUPPORTS" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+    
+    <!-- 3、配置事物切入点，以及把事物切入点和事物属性关联起来 -->
+    <aop:config>
+        <aop:pointcut id="txPointCut" expression="execution(* com.shop.service.*.impl.*.*(..))" />
+        <aop:advisor pointcut-ref="txPointCut" advice-ref="txAdvice"/>
+    </aop:config>
+	 
+</beans>

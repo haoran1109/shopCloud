@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+【】对象关系映射 配置 
+ @author AutoCode 940279663@qq.com
+ @date 2019-08-09 11:35:59
+ -->
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.shop.dao.resource.ResourceUrlsDao">
+
+	<resultMap id="resourceUrlsResultMap" type="com.shop.entity.resource.ResourceUrls">
+		<id property="id" column="id" />
+       <result property="resourceId" column="resource_id" />
+       <result property="urls" column="urls" />
+	</resultMap>
+	<resultMap id="mapResultMap"  type="java.util.HashMap" extends="resourceUrlsResultMap"></resultMap>
+	<resultMap id="pageResultMap"  type="java.util.HashMap" extends="resourceUrlsResultMap"></resultMap>
+	
+	
+	<insert id="insert" parameterType="com.shop.entity.resource.ResourceUrls" useGeneratedKeys="true" keyProperty="id" >
+	   insert into resource_urls (
+	     id,
+	     resource_id,
+	     urls
+	   )values (
+	     #{id},
+	     #{resourceId},
+	     #{urls}
+	   )
+	</insert>
+
+	<update id="update" parameterType="com.shop.entity.resource.ResourceUrls">
+		update resource_urls
+		<set>
+			<if test="id != null">
+				id=#{id},
+			</if>
+			<if test="resourceId != null">
+				resource_id=#{resourceId},
+			</if>
+			<if test="urls != null">
+				urls=#{urls},
+			</if>
+		</set>
+		<where>
+			id=#{id} 
+		</where>
+	</update>
+
+	<delete id="delete" parameterType="map">
+	   delete from 
+	     resource_urls 
+	   where 
+	    id=#{id} 
+	</delete>
+
+	<select id="selectObject" parameterType="map" resultMap="resourceUrlsResultMap">
+	   select 
+	    id,
+	    resource_id,
+	    urls
+	   from resource_urls
+	   where 
+	    id=#{id} 
+	</select>
+
+
+
+	<select id="getUrlsByUserId" parameterType="map" resultType="String">
+	   SELECT
+			t4.urls
+		FROM
+			roleadmin t1
+		LEFT  JOIN  role t2 ON t1.role_id = t2.id
+		INNER JOIN roleresource t3 ON t3.role_id = t2.id
+		INNER JOIN resource_urls t4 ON t4.resource_id = t3.resource_id
+		where t1.admin_id=#{id}
+	</select>
+
+
+	
+	<select id="selectObjectList" parameterType="map" resultMap="resourceUrlsResultMap">
+	   select 
+	     id,
+	     resource_id,
+	     urls
+	   from resource_urls
+	   <where>
+	     <if test="id != null">
+	        id=#{id}
+	     </if>
+	     <if test="resourceId != null">
+	        and resource_id=#{resourceId}
+	     </if>
+	     <if test="urls != null">
+	        and urls=#{urls}
+	     </if>
+	   </where>
+	</select>
+
+	<select id="selectMap" parameterType="map" resultMap="mapResultMap">
+	   select 
+	    id,
+	    resource_id,
+	    urls
+	   from resource_urls
+	   where 
+	    id=#{id} 
+	</select>
+
+	<select id="selectMapList" parameterType="map" resultMap="mapResultMap">
+	   select 
+	     id,
+	     resource_id,
+	     urls
+	   from resource_urls
+	   <where>
+	     <if test="id != null">
+	        id=#{id}
+	     </if>
+	     <if test="resourceId != null">
+	        and resource_id=#{resourceId}
+	     </if>
+	     <if test="urls != null">
+	        and urls=#{urls}
+	     </if>
+	   </where>
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="pageResultMap">
+	   select 
+	     id,
+	     resource_id,
+	     urls
+	<include refid="pageCondition" />
+	limit #{offset},#{rows}
+	</select>
+
+	<select id="pageCount" parameterType="map" resultType="int">
+	   select count(1)
+	   <include refid="pageCondition" />
+	</select>
+
+	<sql id="pageCondition">
+	   from resource_urls
+	   <where>
+	     <if test="id != null">
+	        id=#{id}
+	     </if>
+	     <if test="resourceId != null">
+	        and resource_id=#{resourceId}
+	     </if>
+	     <if test="urls != null">
+	        and urls=#{urls}
+	     </if>
+	   </where>
+	</sql>
+
+	
+</mapper> 
