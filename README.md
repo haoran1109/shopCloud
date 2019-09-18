@@ -45,15 +45,12 @@ http://localhost:8083/order/order/list
 Headers 里面传参 Authorization:bearer 登录返回的token ,比如  Authorization:bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxMzA1MjM4OTIzOSIsInNjb3BlIjpbImFsbCJdLCJsb2dpbk5hbWUiOiIxMzA1MjM4OTIzOSIsImNvbXBhbnkiOiJzaG9wIiwiZXhwIjoxNTY4NzUwNzQxLCJhdXRob3JpdGllcyI6WyIvb3JkZXIvKioiLCIvcm9sZS8qKiIsIi9hZG1pbi8qKiIsIi91c2VyLyoqIiwiUk9MRV_otoXnuqfnrqHnkIblkZgiLCJhZG1pbk1hbmFnZSIsInJvbGVNYW5hZ2UiXSwianRpIjoiMjFiOWIwNWYtZmFkMi00NjNmLWJiNmUtM2RiYzc2NDQyYmZhIiwiY2xpZW50X2lkIjoiaW1vb2MifQ.RBPcejZxmQl4DCaRZdjj12nLahlNr2Moh1Ez-DLvPkE
 
 
-楼主本来以为自己一个人也能模仿着做一套出来的，目前还存在很多问题 想求助于各路神仙大佬 
-
-  该项目只做本人只做学习使用，不用于商业项目中
+本来以为自己一个人也能模仿着做一套出来的，目前还存在很多问题 想求助于各位  该项目只做本人只做学习使用
 
 参考了  paascloud-master项目  https://github.com/paascloud/paascloud-master   大佬写的挺不错的，可惜我水平有限模仿着写还有很多没有解决的问题
 也看了慕课网的 springboot security 视频    https://coding.imooc.com/class/134.html  有兴趣的同学可以去买一套哈
 
 目前存在的问题
-
 
 ##服务之间的互相调用,比如订单服务调用用户服务的feign 接口:http://localhost:8083/order/order/feign?username=ssss99999999 
 ##会出现这个错误
