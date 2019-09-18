@@ -58,7 +58,7 @@ feign.FeignException: status 403 reading FirstClientFeignServicetestFeign(String
 {"error":"access_denied","error_description":"Access is denied"}
 楼主观察过，这个Headers里面的参数确实传到下一个服务了，但是会调用失败，为什么出现还没找到原因，希望大佬们帮我看看这个问题，给我一些建议
 
-联系QQ:940279663 
+联系方式 QQ:940279663   或者加这个群:579857070 
 
 
 
