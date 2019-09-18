@@ -48,7 +48,7 @@ Headers 里面传参 Authorization:bearer 登录返回的token ,比如  Authoriz
 本来以为自己一个人也能模仿着做一套出来的，目前还存在很多问题 想求助于各位  该项目只做本人只做学习使用
 
 参考了  paascloud-master项目  https://github.com/paascloud/paascloud-master   大佬写的挺不错的，可惜我水平有限模仿着写还有很多没有解决的问题
-也看了慕课网的 springboot security 视频    https://coding.imooc.com/class/134.html  有兴趣的同学可以去买一套哈
+也看了慕课网的 springboot security 视频    https://coding.imooc.com/class/134.html  有兴趣的同学可以看看
 
 目前存在的问题
 
@@ -56,7 +56,7 @@ Headers 里面传参 Authorization:bearer 登录返回的token ,比如  Authoriz
 ##会出现这个错误
 feign.FeignException: status 403 reading FirstClientFeignServicetestFeign(String); content:
 {"error":"access_denied","error_description":"Access is denied"}
-楼主观察过，这个Headers里面的参数确实传到下一个服务了，但是为什么出现还没找到原因，希望大佬们帮我看看这个问题，给我一些建议
+楼主观察过，这个Headers里面的参数确实传到下一个服务了，但是会调用失败，为什么出现还没找到原因，希望大佬们帮我看看这个问题，给我一些建议
 
 联系QQ:940279663 
 
