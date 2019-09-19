@@ -28,7 +28,7 @@ Headers 里面传参  Authorization:Basic aW1vb2M6aW1vb2NzZWNyZXQ=
 社交登录(QQ,微信)生成token
 
 下面的地址是通过手机端调起微信授权传送到后端的授权码 获取微信的 providerId以及  openId (回调网站是在开放平台自己配置的域名)
-http://www..com/qqLogin/weixin?code=011fb4Zf1PlNot0qxZXf1DZ2Zf1fb4Z1&state=8fbff73f-df99-4687-8a30-9734c7a4676b           
+http://www.****.com/qqLogin/weixin?code=011fb4Zf1PlNot0qxZXf1DZ2Zf1fb4Z1&state=8fbff73f-df99-4687-8a30-9734c7a4676b           
 
 
 http://localhost:8083/uaa/authentication/openid?providerId=weixin&openId=od4PTw4pV1I3BMKxlXB7cipJUjvc
