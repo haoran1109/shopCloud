@@ -1,6 +1,11 @@
 
 先安装redis 服务器和 数据库
 
+编辑host 文件 添加这两行
+
+127.0.0.1 eurekaserver1
+127.0.0.1 eurekaserver2
+
 启动顺序
 1.先启动注册中心(eureka项目打包成jar)
 java -jar -Dspring.profiles.active=eurekaserver1 C:\Users\haoran1109\Desktop\shop-eureka-1.0-SNAPSHOT.jar
