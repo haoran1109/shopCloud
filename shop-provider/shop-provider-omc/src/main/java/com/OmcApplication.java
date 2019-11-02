@@ -46,6 +46,12 @@ public class OmcApplication extends BaseController {
 		return feignString;
 	}
 
+	@RequestMapping(value = "/test")
+	public  String test(@RequestParam(name = "username") String username){
+		String feignString= userClientPermission.test(username);
+		return feignString;
+	}
+
 
 	/**
 	 * @param args
