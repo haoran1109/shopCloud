@@ -3,13 +3,15 @@ package com.shop.config;
 
 import com.shop.interceptor.TokenInterceptor;
 import com.shop.security.core.properties.SecurityConstants;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.*;
 
 import javax.annotation.Resource;
+import java.nio.charset.Charset;
+import java.util.List;
 
 /**
  * The class Web mvc config.
@@ -37,9 +39,22 @@ public class UacWebMvcConfig extends WebMvcConfigurerAdapter {
 				.excludePathPatterns("/swagger-resources/**", "*.js", "/**/*.js", "*.css", "/**/*.css", "*.html", "/**/*.html", SecurityConstants.DEFAULT_SOCIAL_USER_INFO_URL);
 	}
 
-	/*@Override
-	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-		PcObjectMapper.buidMvcMessageConverter(converters);
-	}*/
+	@Bean
+	public HttpMessageConverter<String> responseBodyConverter() {
+		StringHttpMessageConverter converter = new StringHttpMessageConverter(
+				Charset.forName("UTF-8"));
+		return converter;
+	}
+	@Override
+	public void configureMessageConverters(
+			List<HttpMessageConverter<?>> converters) {
+		super.configureMessageConverters(converters);
+		converters.add(responseBodyConverter());
+	}
+	@Override
+	public void configureContentNegotiation(
+			ContentNegotiationConfigurer configurer) {
+		configurer.favorPathExtension(false);
+	}
 
 }

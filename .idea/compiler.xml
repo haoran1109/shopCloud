@@ -20,5 +20,8 @@
         <module name="uac-provider-api" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="shop-provider-product" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>

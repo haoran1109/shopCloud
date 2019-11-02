@@ -3,9 +3,12 @@ package com.shop.web;
 
 //import com.shop.dto.UserPermission;
 
+import com.alibaba.fastjson.JSONArray;
 import com.base.dto.UserTokenDto;
 import com.google.common.base.Preconditions;
+import com.shop.entity.admin.Admin;
 import com.shop.security.app.social.AppSingUpUtils;
+import com.shop.service.admin.AdminService;
 import com.shop.service.userToken.UacUserTokenService;
 import com.shop.support.BaseController;
 import com.shop.utils.RequestUtil;
@@ -28,6 +31,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -136,6 +141,22 @@ public class UserController extends BaseController {
 			return WrapMapper.error();
 		}
 		return WrapMapper.ok(token);
+	}
+
+	@Autowired
+	private AdminService adminService;
+
+	@RequestMapping(value = "/testFeign")
+	public  String feign(@RequestParam(name = "username") String username){
+		Map<String,Object> map=new HashMap<>(10);
+		map.put("username",username);
+		Admin admin =adminService.selectByUserName(map);
+		return JSONArray.toJSONString(admin);
+	}
+
+	@RequestMapping(value = "/test")
+	public  String test(){
+		return JSONArray.toJSONString("test");
 	}
 
 
