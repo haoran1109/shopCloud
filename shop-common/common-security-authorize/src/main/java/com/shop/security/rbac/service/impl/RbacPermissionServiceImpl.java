@@ -39,10 +39,6 @@ public class RbacPermissionServiceImpl implements RbacPermissionService {
 			hasPermission = true;
 		}else{
 			for (final String authority : currentAuthorityUrl) {
-				/*// DEMO项目放过查询权限
-				if (requestURI.contains("query") || requestURI.contains("get") || requestURI.contains("check") || requestURI.contains("select")) {
-					return true;
-				}*/
 				if (antPathMatcher.match(authority, requestURI)) {
 					logger.info("有权限");
 					return true;
