@@ -126,17 +126,19 @@ public class TokenInterceptor implements HandlerInterceptor,ApplicationContextAw
 		}
 		Gson gson = new Gson();
 		LoginAuthDto loginUser=gson.fromJson(obj.toString(), LoginAuthDto.class);
+		ThreadLocalMap.put(GlobalConstant.Sys.TOKEN_AUTH_DTO, loginUser);
+		return true;
 		//校验权限
-		for (final String authority : loginUser.getGrantedAuthorities()) {
-			if (antPathMatcher.match(authority, uri)) {
-				loginUser.setGrantedAuthorities(null);
-				ThreadLocalMap.put(GlobalConstant.Sys.TOKEN_AUTH_DTO, loginUser);
-				log.info("<== preHandle - 权限拦截器.loginUser={}",loginUser);
-				return true;
-			}
-		}
-		log.error("校验权限实现, 不允许操作");
-		return false;
+//		for (final String authority : loginUser.getGrantedAuthorities()) {
+//			if (antPathMatcher.match(authority, uri)) {
+//				loginUser.setGrantedAuthorities(null);
+//				ThreadLocalMap.put(GlobalConstant.Sys.TOKEN_AUTH_DTO, loginUser);
+//				log.info("<== preHandle - 权限拦截器.loginUser={}",loginUser);
+//				return true;
+//			}
+//		}
+//		log.error("校验权限实现, 不允许操作");
+//		return false;
 	}
 
 	private void handleException(HttpServletResponse res) throws IOException {

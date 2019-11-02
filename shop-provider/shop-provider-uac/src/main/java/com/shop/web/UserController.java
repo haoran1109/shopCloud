@@ -142,22 +142,4 @@ public class UserController extends BaseController {
 		}
 		return WrapMapper.ok(token);
 	}
-
-	@Autowired
-	private AdminService adminService;
-
-	@RequestMapping(value = "/testFeign")
-	public  String feign(@RequestParam(name = "username") String username){
-		Map<String,Object> map=new HashMap<>(10);
-		map.put("username",username);
-		Admin admin =adminService.selectByUserName(map);
-		return JSONArray.toJSONString(admin);
-	}
-
-	@RequestMapping(value = "/test")
-	public  String test(){
-		return JSONArray.toJSONString("test");
-	}
-
-
 }

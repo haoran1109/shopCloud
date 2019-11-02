@@ -46,7 +46,7 @@ public class DemoUserDetailsService implements UserDetailsService, SocialUserDet
 	}
 
 	/**
-	 * @description: 自定义实现的查询用户信息以及权限信息
+	 * @description: 登录时 自定义实现的查询用户信息以及权限信息
 	 * @author haoran.zhang
 	 * @date 2019/08/04 20:26
 	 * @param [userId]

@@ -14,7 +14,13 @@ import org.springframework.util.AntPathMatcher;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
 
-
+/**
+ * @description: 对请求的URL与用户所拥有的权限比对
+ * @author haoran.zhang
+ * @date 2019/11/02 18:56
+ * @param
+ * @return
+ */
 @Component("rbacPermissionService")
 public class RbacPermissionServiceImpl implements RbacPermissionService {
 
