@@ -55,10 +55,6 @@ Headers 里面传参 Authorization:bearer 登录返回的token ,比如  Authoriz
 参考了  paascloud-master项目  https://github.com/paascloud/paascloud-master   大佬写的挺不错的，可惜我水平有限模仿着写还有很多没有解决的问题
 也看了慕课网的 springboot security 视频    https://coding.imooc.com/class/134.html  有兴趣的同学可以看看
 
-目前存在的问题
-
-##服务之间的互相调用,比如订单服务调用用户服务的feign 接口:http://localhost:8083/order/order/feign?username=ssss99999999 
-
 
 
 
