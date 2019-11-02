@@ -2,6 +2,7 @@ package com;
 
 import com.base.dto.LoginAuthDto;
 import com.shop.UserClientPermission;
+import com.shop.dto.AdminDto;
 import com.shop.support.BaseController;
 import com.shop.wrapper.Wrapper;
 import org.slf4j.Logger;
@@ -42,8 +43,8 @@ public class OmcApplication extends BaseController {
 	}
 
 	@RequestMapping(value = "/feign")
-	public  Wrapper<String> feign(@RequestParam(name = "username") String username){
-		Wrapper<String> feignString= userClientPermission.testFeign(username);
+	public  Wrapper<AdminDto> feign(@RequestParam(name = "username") String username){
+		Wrapper<AdminDto> feignString= userClientPermission.testFeign(username);
 		return feignString;
 	}
 

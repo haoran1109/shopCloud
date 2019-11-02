@@ -4,12 +4,14 @@ package com.shop.web.client;
 //import com.shop.dto.UserPermission;
 
 import com.alibaba.fastjson.JSONArray;
+import com.shop.dto.AdminDto;
 import com.shop.entity.admin.Admin;
 import com.shop.service.admin.AdminService;
 import com.shop.support.BaseController;
 import com.shop.wrapper.WrapMapper;
 import com.shop.wrapper.Wrapper;
 import io.swagger.annotations.Api;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,11 +34,13 @@ public class UserCilentController extends BaseController {
 	private AdminService adminService;
 
 	@RequestMapping(value = "/testFeign")
-	public Wrapper<String> feign(@RequestParam(name = "username") String username){
+	public Wrapper<AdminDto> feign(@RequestParam(name = "username") String username){
 		Map<String,Object> map=new HashMap<>(10);
 		map.put("username",username);
 		Admin admin =adminService.selectByUserName(map);
-		return WrapMapper.ok(JSONArray.toJSONString(admin));
+		AdminDto  dto=new AdminDto();
+		BeanUtils.copyProperties(admin,dto);
+		return WrapMapper.ok(dto);
 	}
 
 	@RequestMapping(value = "/test")

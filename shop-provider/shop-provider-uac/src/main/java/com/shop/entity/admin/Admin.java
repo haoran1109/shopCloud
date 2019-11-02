@@ -111,7 +111,7 @@ public class Admin extends AbstractObject implements UserDetails {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        sb.append("Admin");
+        sb.append("AdminDto");
         sb.append("{id=").append(id);
         sb.append(", createdTime=").append(createdTime);
         sb.append(", password=").append(password);
