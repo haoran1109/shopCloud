@@ -12,4 +12,12 @@
     <artifactId>uac-provider-api</artifactId>
 
 
+    <dependencies>
+        <dependency>
+            <groupId>com.shop.paascloud</groupId>
+            <artifactId>common-util</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
 </project>

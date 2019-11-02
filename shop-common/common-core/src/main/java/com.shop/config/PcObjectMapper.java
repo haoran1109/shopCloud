@@ -1,4 +1,4 @@
-/*
+
 
 package com.shop.config;
 
@@ -15,12 +15,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import java.util.List;
 
 
-*/
-/**
- * The class Pc object mapper.
- *
- *
- *//*
 
 public class PcObjectMapper {
 	private PcObjectMapper() {
@@ -42,4 +36,3 @@ public class PcObjectMapper {
 	}
 
 }
-*/

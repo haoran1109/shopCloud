@@ -3,6 +3,7 @@ package com;
 import com.base.dto.LoginAuthDto;
 import com.shop.UserClientPermission;
 import com.shop.support.BaseController;
+import com.shop.wrapper.Wrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,14 +42,14 @@ public class OmcApplication extends BaseController {
 	}
 
 	@RequestMapping(value = "/feign")
-	public  String feign(@RequestParam(name = "username") String username){
-		String feignString= userClientPermission.testFeign(username);
+	public  Wrapper<String> feign(@RequestParam(name = "username") String username){
+		Wrapper<String> feignString= userClientPermission.testFeign(username);
 		return feignString;
 	}
 
 	@RequestMapping(value = "/test")
-	public  String test(@RequestParam(name = "username") String username){
-		String feignString= userClientPermission.test(username);
+	public  Wrapper<String> test(@RequestParam(name = "username") String username){
+		Wrapper<String> feignString= userClientPermission.test(username);
 		return feignString;
 	}
 
