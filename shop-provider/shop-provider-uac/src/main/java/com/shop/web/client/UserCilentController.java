@@ -38,8 +38,8 @@ public class UserCilentController extends BaseController {
 	}
 
 	@RequestMapping(value = "/test")
-	public  String test(){
-		return JSONArray.toJSONString("test");
+	public  String test(@RequestParam(name = "username") String username){
+		return username;
 	}
 
 
