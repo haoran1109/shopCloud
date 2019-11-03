@@ -70,7 +70,7 @@ public class UserController extends BaseController {
 	@GetMapping("/me")
 	public Object getCurrentUser(Authentication user, HttpServletRequest request) throws ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException, UnsupportedEncodingException {
 		
-//		String token = StringUtils.substringAfter(request.getHeader("Authorization"), "bearer ");
+//		String token = StringUtils.substringAfter(request.getHeader("Authorization"), "Bearer ");
 //		
 //		Claims claims = Jwts.parser().setSigningKey(securityProperties.getOauth2().getJwtSigningKey().getBytes("UTF-8"))
 //					.parseClaimsJws(token).getBody();

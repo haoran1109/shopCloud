@@ -22,7 +22,7 @@ public class AuthHeaderFilter extends ZuulFilter {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
-	private static final String BEARER_TOKEN_TYPE = "bearer ";
+	private static final String BEARER_TOKEN_TYPE = "Bearer ";
 	private static final String OPTIONS = "OPTIONS";
 	private static final String AUTH_PATH = "/auth";
 	private static final String LOGOUT_URI = "/oauth/token";

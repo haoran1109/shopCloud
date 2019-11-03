@@ -87,7 +87,7 @@ public class RenewFilter extends ZuulFilter {
 
 	private void doSomething(RequestContext requestContext) {
 		HttpServletRequest request = requestContext.getRequest();
-		String token = StringUtils.substringAfter(request.getHeader(HttpHeaders.AUTHORIZATION), "bearer ");
+		String token = StringUtils.substringAfter(request.getHeader(HttpHeaders.AUTHORIZATION), "Bearer ");
 		if (StringUtils.isEmpty(token)) {
 			return;
 		}
