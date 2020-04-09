@@ -18,6 +18,7 @@ public final class SecurityUtils {
 
 	private static final String AUTH_LOGIN_AFTER_URL = "/user/loginAfter/*";
 	private static final String AUTH_LOGOUT_URL = "/user/logout";
+	private static final String AUTH_SMS_URL = "/code/sms";
 
 	/**
 	 * Gets current login name.
@@ -55,6 +56,7 @@ public final class SecurityUtils {
 			}
 		}
 		path.add("/user/regist");
+		path.add(AUTH_SMS_URL);
 		path.add(AUTH_LOGIN_AFTER_URL);
 		path.add(AUTH_LOGOUT_URL);
 		return path;

@@ -12,6 +12,7 @@ import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -23,8 +24,8 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class AppSingUpUtils {
 
-	@Autowired
-	private RedisTemplate<Object, Object> redisTemplate;
+	@Resource
+	private RedisTemplate<String, Object> redisTemplate;
 	
 	@Autowired
 	private UsersConnectionRepository usersConnectionRepository;

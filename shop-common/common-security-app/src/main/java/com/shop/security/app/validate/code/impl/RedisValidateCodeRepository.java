@@ -5,6 +5,7 @@ import com.shop.security.core.validate.code.ValidateCode;
 import com.shop.security.core.validate.code.ValidateCodeException;
 import com.shop.security.core.validate.code.ValidateCodeRepository;
 import com.shop.security.core.validate.code.ValidateCodeType;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,10 +21,11 @@ import java.util.concurrent.TimeUnit;
  *
  */
 @Component
+@Slf4j
 public class RedisValidateCodeRepository implements ValidateCodeRepository {
 
 	@Autowired
-	private RedisTemplate<Object, Object> redisTemplate;
+	private RedisTemplate<String, Object> redisTemplate;
 
 	/*
 	 * (non-Javadoc)
@@ -36,7 +38,9 @@ public class RedisValidateCodeRepository implements ValidateCodeRepository {
 	 */
 	@Override
 	public void save(ServletWebRequest request, ValidateCode code, ValidateCodeType type) {
-		redisTemplate.opsForValue().set(buildKey(request, type), code, 30, TimeUnit.MINUTES);
+		String str=buildKey(request, type);
+		log.info("验证码是:{}",str);
+		redisTemplate.opsForValue().set(str,code, 30, TimeUnit.MINUTES);
 	}
 
 	/*
@@ -53,7 +57,7 @@ public class RedisValidateCodeRepository implements ValidateCodeRepository {
 		if (value == null) {
 			return null;
 		}
-		return (ValidateCode) value;
+		return  (ValidateCode) value;
 	}
 
 	/*

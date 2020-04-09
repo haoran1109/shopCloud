@@ -20,6 +20,7 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -37,6 +38,7 @@ public class TokenInterceptor implements HandlerInterceptor,ApplicationContextAw
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
+	@Resource
 	private RedisTemplate<String, Object> redisTemplate;
 
 	private static   ApplicationContext ac;
@@ -93,6 +95,13 @@ public class TokenInterceptor implements HandlerInterceptor,ApplicationContextAw
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		String uri = request.getRequestURI();
 		log.info("<== preHandle - 权限拦截器.  url={}", uri);
+
+
+		if (uri.contains("/code/sms")) {
+			log.info("<== preHandle - 配置URL不走认证.  url={}", uri);
+			return true;
+		}
+
 		if (uri.contains(AUTH_PATH1) || uri.contains(AUTH_PATH2) || uri.contains(AUTH_PATH3) || uri.contains(AUTH_PATH4)) {
 			log.info("<== preHandle - 配置URL不走认证.  url={}", uri);
 			return true;
