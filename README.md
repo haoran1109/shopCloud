@@ -22,7 +22,7 @@ http://localhost:8083/uaa/authentication/form?username=13052389239&password=1234
 Headers 里面传参  Authorization:Basic aW1vb2M6aW1vb2NzZWNyZXQ=
                  deviceId:007
 
-![image](https://github.com/haoran1109/shopCloud/blob/master/doc/%E7%94%A8%E6%88%B7%E5%90%8D%E5%AF%86%E7%A0%81%E7%99%BB%E5%BD%95%E4%BC%A0%E5%8F%821.png)
+![image](http://47.97.5.77/%E7%9F%AD%E4%BF%A1%E7%99%BB%E5%BD%95%E6%89%93%E5%8D%B0%E8%8E%B7%E5%8F%96%E7%9A%84%E9%AA%8C%E8%AF%81%E7%A0%81.png)
                  
 ##手机短信登录生成token
 产生短信验证码
