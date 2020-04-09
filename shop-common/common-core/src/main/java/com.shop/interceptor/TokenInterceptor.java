@@ -9,10 +9,6 @@ import com.shop.ThreadLocalMap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -33,15 +29,12 @@ import java.io.IOException;
  *
  */
 @Component
-@Order(Integer.MIN_VALUE)
-public class TokenInterceptor implements HandlerInterceptor,ApplicationContextAware {
+public class TokenInterceptor implements HandlerInterceptor {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	@Resource
 	private RedisTemplate<String, Object> redisTemplate;
-
-	private static   ApplicationContext ac;
 
 	private AntPathMatcher antPathMatcher = new AntPathMatcher();
 
@@ -122,10 +115,6 @@ public class TokenInterceptor implements HandlerInterceptor,ApplicationContextAw
 
 		log.info("<== preHandle - 权限拦截器.  token={}", token);
 
-		if(redisTemplate==null){
-			redisTemplate=(RedisTemplate)ac.getBean("redisTemplate");
-		}
-
         Object obj=redisTemplate.opsForValue().get(RedisKeyUtil.getAccessTokenKey(token));
 		if (obj == null) {
 			log.error("获取用户信息失败, 不允许操作");
@@ -145,11 +134,6 @@ public class TokenInterceptor implements HandlerInterceptor,ApplicationContextAw
 		res.setCharacterEncoding("UTF-8");
 		res.getWriter().write("{\"code\":100009 ,\"message\" :\"解析token失败\"}");
 		res.flushBuffer();
-	}
-
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		ac=applicationContext;
 	}
 
 	/*private boolean isHaveAccess(Object handler) {
