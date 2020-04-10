@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  *
- *
+ *token 添加附加字段
  */
 public class TokenJwtEnhancer implements TokenEnhancer {
 
