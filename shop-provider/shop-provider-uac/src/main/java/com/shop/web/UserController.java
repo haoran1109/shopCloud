@@ -1,14 +1,10 @@
 
 package com.shop.web;
 
-//import com.shop.dto.UserPermission;
-
-import com.alibaba.fastjson.JSONArray;
-import com.base.dto.UserTokenDto;
 import com.google.common.base.Preconditions;
 import com.shop.entity.admin.Admin;
 import com.shop.security.app.social.AppSingUpUtils;
-import com.shop.service.admin.AdminService;
+import com.shop.security.core.properties.SecurityProperties;
 import com.shop.service.userToken.UacUserTokenService;
 import com.shop.support.BaseController;
 import com.shop.utils.RequestUtil;
@@ -24,15 +20,17 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.UnapprovedClientAuthenticationException;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.ServletWebRequest;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  *
@@ -55,17 +53,40 @@ public class UserController extends BaseController {
 
 	private static final String BEARER_TOKEN_TYPE = "Basic ";
 
-//	@Autowired
-//	private SecurityProperties securityProperties;
-	
-	/*@PostMapping("/regist")
-	public void regist(UserPermission user, HttpServletRequest request) {
-		
+
+	@Autowired
+	private SecurityProperties securityProperties;
+
+	//这里模拟第三方用户注册> 登录
+	@PostMapping("/regist")
+	public void regist(Admin user, HttpServletRequest request) {
+
 		//不管是注册用户还是绑定用户，都会拿到一个用户唯一标识。
 		String userId = user.getUsername();
 		//providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
 		appSingUpUtils.doPostSignUp(new ServletWebRequest(request), userId);
-	}*/
+	}
+
+	@Resource
+	private TokenStore tokenStore;
+
+	/**
+	 * @description: 校验token是否有效
+	 * @author haoran.zhang
+	 * @date 2020/04/11 15:06
+	 * @param [token]
+	 * @return com.shop.wrapper.Wrapper
+	 */
+	@RequestMapping({"/oauth/check_token"})
+	public Wrapper checkToken(@RequestParam("token") String token) {
+		OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);
+		int expiresIn = oAuth2AccessToken.getExpiresIn();
+		if (expiresIn < 0) {
+			return WrapMapper.ok(false);
+		}
+		return WrapMapper.ok(true);
+	}
+
 	
 	@GetMapping("/me")
 	public Object getCurrentUser(Authentication user, HttpServletRequest request) throws ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException, UnsupportedEncodingException {
@@ -90,17 +111,16 @@ public class UserController extends BaseController {
 	 *
 	 * @return the wrapper
 	 */
-	/*@PostMapping(value = "/user/logout")
+	@PostMapping(value = "/logout")
 	@ApiOperation(httpMethod = "POST", value = "登出")
-	public Wrapper loginAfter(String accessToken) {
-		if (!StringUtils.isEmpty(accessToken)) {
+	public Wrapper loginAfter(String access_token,String refresh_token) {
+		logger.info("access_token{},refresh_token{}",access_token,refresh_token);
+		if (!StringUtils.isEmpty(access_token)) {
 			// 修改用户在线状态
-			UserTokenDto userTokenDto = uacUserTokenService.getByAccessToken(accessToken);
-			userTokenDto.setStatus(UacUserTokenStatusEnum.OFF_LINE.getStatus());
-			uacUserTokenService.updateUacUserToken(userTokenDto, getLoginAuthDto());
+			uacUserTokenService.logout(access_token,refresh_token);
 		}
-		return WrapMapper.ok();
-	}*/
+		return WrapMapper.ok("退出登录成功");
+	}
 
 	/**
 	 * 刷新token.

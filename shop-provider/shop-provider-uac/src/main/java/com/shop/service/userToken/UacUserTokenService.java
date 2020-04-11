@@ -44,4 +44,16 @@ public interface UacUserTokenService {
 	 *
 	 */
 	String refreshToken(String accessToken,String refreshTokenValue, HttpServletRequest request) throws Exception;
+
+
+
+
+	/**
+	 * @description:
+	 * @author haoran.zhang
+	 * @date 2020/04/11 14:13
+	 * @param
+	 * @return
+	 */
+	void logout(String accessToken,String refreshToken);
 }

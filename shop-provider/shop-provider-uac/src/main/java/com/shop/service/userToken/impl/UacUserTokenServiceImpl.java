@@ -19,6 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.common.OAuth2RefreshToken;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -108,6 +111,23 @@ public class UacUserTokenServiceImpl implements UacUserTokenService {
 		// 更新的token 保存对应的用户信息 并且返回给前端
 		this.saveUserToken(accessTokenNew, refreshTokenNew, loginAuthDto, request);
 		return token;
+	}
+
+	@Resource
+	private TokenStore tokenStore;
+
+	@Override
+	public void logout(String accessToken,String refreshToken) {
+		//清除redis 中token登录用户信息
+		redisTemplate.delete(RedisKeyUtil.getAccessTokenKey(accessToken));
+		//清除对应的token
+		OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(accessToken);
+		OAuth2RefreshToken oAuth2RefreshToken = tokenStore.readRefreshToken(refreshToken);
+		if(null!=oAuth2AccessToken){
+			tokenStore.removeAccessToken(oAuth2AccessToken);
+		}if(null!=oAuth2RefreshToken ){
+			tokenStore.removeRefreshToken(oAuth2RefreshToken);
+		}
 	}
 
 	/**

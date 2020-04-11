@@ -3,6 +3,8 @@ package com.shop.interceptor;
 
 import com.base.constant.GlobalConstant;
 import com.base.dto.LoginAuthDto;
+import com.base.enums.ErrorCodeEnum;
+import com.base.exception.BusinessException;
 import com.google.gson.Gson;
 import com.shop.RedisKeyUtil;
 import com.shop.ThreadLocalMap;
@@ -118,7 +120,8 @@ public class TokenInterceptor implements HandlerInterceptor {
         Object obj=redisTemplate.opsForValue().get(RedisKeyUtil.getAccessTokenKey(token));
 		if (obj == null) {
 			log.error("获取用户信息失败, 不允许操作");
-			return false;
+			throw new BusinessException(ErrorCodeEnum.GL99990401);
+			//return false;
 		}
 		Gson gson = new Gson();
 		LoginAuthDto loginUser=gson.fromJson(obj.toString(), LoginAuthDto.class);
