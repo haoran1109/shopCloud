@@ -49,6 +49,9 @@ Headers 里面传参 Authorization:Bearer 登录返回的token ,比如  Authoriz
 http://localhost:8083/order/order/list
 Headers 里面传参 Authorization:Bearer 登录返回的token ,比如  Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxMzA1MjM4OTIzOSIsInNjb3BlIjpbImFsbCJdLCJsb2dpbk5hbWUiOiIxMzA1MjM4OTIzOSIsImNvbXBhbnkiOiJzaG9wIiwiZXhwIjoxNTY4NzUwNzQxLCJhdXRob3JpdGllcyI6WyIvb3JkZXIvKioiLCIvcm9sZS8qKiIsIi9hZG1pbi8qKiIsIi91c2VyLyoqIiwiUk9MRV_otoXnuqfnrqHnkIblkZgiLCJhZG1pbk1hbmFnZSIsInJvbGVNYW5hZ2UiXSwianRpIjoiMjFiOWIwNWYtZmFkMi00NjNmLWJiNmUtM2RiYzc2NDQyYmZhIiwiY2xpZW50X2lkIjoiaW1vb2MifQ.RBPcejZxmQl4DCaRZdjj12nLahlNr2Moh1Ez-DLvPkE
 
+shop-provider-uac 模块的 application.properties  默认缺省使用JWT 方式生成 token,放开则切换成 redis存储token
+#####shop.security.oauth2.tokenStore = redis
+
 
 参考了  paascloud-master项目  https://github.com/paascloud/paascloud-master  
 也看了慕课网的 springboot security 视频    https://coding.imooc.com/class/134.html  有兴趣的同学可以看看
