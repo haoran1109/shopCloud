@@ -56,6 +56,8 @@ public class ImoocAuthorizationServerConfig extends AuthorizationServerConfigure
 
 	@Autowired
 	private DataSource dataSource;
+	@Autowired
+	private  TokenRedisEnhancer tokenRedisEnhancer;
 
 	/**
 	 * 认证及token配置
@@ -73,6 +75,13 @@ public class ImoocAuthorizationServerConfig extends AuthorizationServerConfigure
 			enhancers.add(jwtAccessTokenConverter);
 			enhancerChain.setTokenEnhancers(enhancers);
 			endpoints.tokenEnhancer(enhancerChain).accessTokenConverter(jwtAccessTokenConverter);
+		}else{
+			//redis 登录也添加 token额外字段，到过滤链
+			TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
+			List<TokenEnhancer> enhancers = new ArrayList<>();
+			enhancers.add(tokenRedisEnhancer);
+			enhancerChain.setTokenEnhancers(enhancers);
+			endpoints.tokenEnhancer(enhancerChain);
 		}
 
 	}

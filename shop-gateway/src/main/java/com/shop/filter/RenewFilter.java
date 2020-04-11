@@ -30,8 +30,8 @@ public class RenewFilter extends ZuulFilter {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
-	@Resource
-	private JwtTokenStore jwtTokenStore;
+//	@Resource
+//	private JwtTokenStore jwtTokenStore;
 
 	private static final int EXPIRES_IN = 60 * 20;
 
@@ -91,13 +91,15 @@ public class RenewFilter extends ZuulFilter {
 		if (StringUtils.isEmpty(token)) {
 			return;
 		}
-		OAuth2AccessToken oAuth2AccessToken = jwtTokenStore.readAccessToken(token);
-		int expiresIn = oAuth2AccessToken.getExpiresIn();
-
-		if (expiresIn < EXPIRES_IN) {
-			HttpServletResponse servletResponse = requestContext.getResponse();
-			servletResponse.addHeader("Renew-Header", "true");
-		}
+//		Jwt token登录可以放开下面这一段  由于网关也是资源服务  Jwt在网关层可以解析 ，所以这里直接获取，
+// 判断是否返回token续租标志,或者是直接从checkToken接口获取是否过期
+//		OAuth2AccessToken oAuth2AccessToken = jwtTokenStore.readAccessToken(token);
+//		int expiresIn = oAuth2AccessToken.getExpiresIn();
+//
+//		if (expiresIn < EXPIRES_IN) {
+//			HttpServletResponse servletResponse = requestContext.getResponse();
+//			servletResponse.addHeader("Renew-Header", "true");
+//		}
 	}
 
 }
