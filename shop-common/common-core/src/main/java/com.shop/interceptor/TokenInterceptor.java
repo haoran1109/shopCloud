@@ -59,10 +59,10 @@ public class TokenInterceptor implements HandlerInterceptor {
 	 */
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object arg2, Exception ex) throws Exception {
-		if (ex != null) {
-			log.error("<== afterCompletion - 解析token失败. ex={}", ex.getMessage(), ex);
-			this.handleException(response);
-		}
+//		if (ex != null) {
+//			log.error("<== afterCompletion - 解析token失败. ex={}", ex.getMessage(), ex);
+//			this.handleException(response);
+//		}
 	}
 
 	/**
@@ -108,11 +108,6 @@ public class TokenInterceptor implements HandlerInterceptor {
 			return true;
 		}
 
-		/*if (isHaveAccess(handler)) {
-			log.info("<== preHandle - 不需要认证注解不走认证.  token={}");
-			return true;
-		}*/
-
 		String token = StringUtils.substringAfter(request.getHeader(HttpHeaders.AUTHORIZATION), "Bearer ");
 
 		log.info("<== preHandle - 权限拦截器.  token={}", token);
@@ -129,24 +124,14 @@ public class TokenInterceptor implements HandlerInterceptor {
 		return true;
 	}
 
-	private void handleException(HttpServletResponse res) throws IOException {
-		res.resetBuffer();
-		res.setHeader("Access-Control-Allow-Origin", "*");
-		res.setHeader("Access-Control-Allow-Credentials", "true");
-		res.setContentType("application/json");
-		res.setCharacterEncoding("UTF-8");
-		res.getWriter().write("{\"code\":100009 ,\"message\" :\"解析token失败\"}");
-		res.flushBuffer();
-	}
-
-	/*private boolean isHaveAccess(Object handler) {
-		HandlerMethod handlerMethod = (HandlerMethod) handler;
-
-		Method method = handlerMethod.getMethod();
-
-		NoNeedAccessAuthentication responseBody = AnnotationUtils.findAnnotation(method, NoNeedAccessAuthentication.class);
-		return responseBody != null;
-	}*/
-
+//	private void handleException(HttpServletResponse res) throws IOException {
+//		res.resetBuffer();
+//		res.setHeader("Access-Control-Allow-Origin", "*");
+//		res.setHeader("Access-Control-Allow-Credentials", "true");
+//		res.setContentType("application/json");
+//		res.setCharacterEncoding("UTF-8");
+//		res.getWriter().write("{\"code\":100009 ,\"message\" :\"解析token失败\"}");
+//		res.flushBuffer();
+//	}
 }
   

@@ -4,6 +4,7 @@ package com.shop.web.client;
 //import com.shop.dto.UserPermission;
 
 import com.alibaba.fastjson.JSONArray;
+import com.shop.annotation.NoNeedAccessAuthentication;
 import com.shop.dto.AdminDto;
 import com.shop.entity.admin.Admin;
 import com.shop.service.admin.AdminService;
@@ -43,6 +44,7 @@ public class UserCilentController extends BaseController {
 		return WrapMapper.ok(dto);
 	}
 
+	@NoNeedAccessAuthentication
 	@RequestMapping(value = "/test")
 	public  Wrapper<String> test(@RequestParam(name = "username") String username){
 		return WrapMapper.ok(username);
