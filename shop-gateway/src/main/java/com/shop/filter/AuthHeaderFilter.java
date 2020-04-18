@@ -87,9 +87,9 @@ public class AuthHeaderFilter extends ZuulFilter {
 		}*/
 		String authHeader = getAuthHeader(request);
 
-		if (isEmpty(authHeader)) {
-			throw new ZuulException("刷新页面重试", 403, "check token fail");
-		}
+//		if (isEmpty(authHeader)) {
+//			throw new ZuulException("刷新页面重试", 403, "check token fail");
+//		}
 
 
 
@@ -106,9 +106,9 @@ public class AuthHeaderFilter extends ZuulFilter {
 	public static String getAuthHeader(HttpServletRequest request) {
 
 		String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-		if (org.apache.commons.lang.StringUtils.isEmpty(authHeader)) {
-			throw new BusinessException(ErrorCodeEnum.UAC10011040);
-		}
+//		if (org.apache.commons.lang.StringUtils.isEmpty(authHeader)) {
+//			throw new BusinessException(ErrorCodeEnum.UAC10011040);
+//		}
 		return authHeader;
 	}
 

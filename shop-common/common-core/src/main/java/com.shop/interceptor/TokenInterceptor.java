@@ -8,22 +8,24 @@ import com.base.exception.BusinessException;
 import com.google.gson.Gson;
 import com.shop.RedisKeyUtil;
 import com.shop.ThreadLocalMap;
+import com.shop.annotation.NoNeedAccessAuthentication;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.lang.reflect.Method;
 
-//import com.shop.annotation.NoNeedAccessAuthentication;
 
 /**
  * The class Token interceptor.
@@ -37,9 +39,6 @@ public class TokenInterceptor implements HandlerInterceptor {
 
 	@Resource
 	private RedisTemplate<String, Object> redisTemplate;
-
-	private AntPathMatcher antPathMatcher = new AntPathMatcher();
-
 
 	private static final String OPTIONS = "OPTIONS";
 	private static final String AUTH_PATH1 = "/auth";
@@ -91,7 +90,6 @@ public class TokenInterceptor implements HandlerInterceptor {
 		String uri = request.getRequestURI();
 		log.info("<== preHandle - 权限拦截器.  url={}", uri);
 
-
 		if (uri.contains("/code/sms")) {
 			log.info("<== preHandle - 配置URL不走认证.  url={}", uri);
 			return true;
@@ -101,27 +99,35 @@ public class TokenInterceptor implements HandlerInterceptor {
 			log.info("<== preHandle - 配置URL不走认证.  url={}", uri);
 			return true;
 		}
-		log.info("<== preHandle - 调试模式不走认证.  OPTIONS={}", request.getMethod().toUpperCase());
 
-		if (OPTIONS.equalsIgnoreCase(request.getMethod())) {
-			log.info("<== preHandle - 调试模式不走认证.  url={}", uri);
+		if (isHaveAccess(handler)) {
+			log.info("<== preHandle - 不需要认证注解不走认证.  token={}");
 			return true;
 		}
 
 		String token = StringUtils.substringAfter(request.getHeader(HttpHeaders.AUTHORIZATION), "Bearer ");
-
-		log.info("<== preHandle - 权限拦截器.  token={}", token);
-
+		if(StringUtils.isBlank(token)){
+			log.error("获取用户信息失败, 不允许操作");
+			throw new BusinessException(ErrorCodeEnum.GL99990401);
+		}
         Object obj=redisTemplate.opsForValue().get(RedisKeyUtil.getAccessTokenKey(token));
 		if (obj == null) {
 			log.error("获取用户信息失败, 不允许操作");
-			throw new BusinessException(ErrorCodeEnum.GL99990401);
-			//return false;
+			return false;
 		}
 		Gson gson = new Gson();
 		LoginAuthDto loginUser=gson.fromJson(obj.toString(), LoginAuthDto.class);
 		ThreadLocalMap.put(GlobalConstant.Sys.TOKEN_AUTH_DTO, loginUser);
 		return true;
+	}
+
+	private boolean isHaveAccess(Object handler) {
+		HandlerMethod handlerMethod = (HandlerMethod) handler;
+
+		Method method = handlerMethod.getMethod();
+
+		NoNeedAccessAuthentication responseBody = AnnotationUtils.findAnnotation(method, NoNeedAccessAuthentication.class);
+		return responseBody != null;
 	}
 
 //	private void handleException(HttpServletResponse res) throws IOException {

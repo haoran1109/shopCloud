@@ -2,6 +2,7 @@ package com;
 
 import com.base.dto.LoginAuthDto;
 import com.shop.UserClientPermission;
+import com.shop.annotation.NoNeedAccessAuthentication;
 import com.shop.dto.AdminDto;
 import com.shop.support.BaseController;
 import com.shop.wrapper.Wrapper;
@@ -49,9 +50,9 @@ public class OmcApplication extends BaseController {
 	}
 
 	@RequestMapping(value = "/test")
-	public  Wrapper<String> test(@RequestParam(name = "username") String username){
-		Wrapper<String> feignString= userClientPermission.test(username);
-		return feignString;
+	@NoNeedAccessAuthentication
+	public  String test(@RequestParam(name = "username") String username){
+		return "test  no  bearer"+username;
 	}
 
 
