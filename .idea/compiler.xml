@@ -2,6 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -15,6 +16,7 @@
         <module name="common-util" />
         <module name="shop-eureka" />
         <module name="shop-gateway" />
+        <module name="shop-provider-mdc" />
         <module name="shop-provider-omc" />
         <module name="shop-provider-uac" />
         <module name="uac-provider-api" />

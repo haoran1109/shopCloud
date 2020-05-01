@@ -15,6 +15,7 @@
     <modules>
         <module>shop-provider-uac</module>
         <module>shop-provider-omc</module>
+        <module>shop-provider-mdc</module>
     </modules>
 
     <dependencies>
