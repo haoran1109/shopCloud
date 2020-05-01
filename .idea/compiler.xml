@@ -25,6 +25,7 @@
     <bytecodeTargetLevel>
       <module name="common-mq" target="1.8" />
       <module name="shop-provider-product" target="1.5" />
+      <module name="shop-provider-search" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

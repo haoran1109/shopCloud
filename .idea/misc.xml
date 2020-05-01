@@ -11,6 +11,7 @@
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/shop-common/common-mq/pom.xml" />
+        <option value="$PROJECT_DIR$/shop-provider/shop-provider-search/pom.xml" />
       </set>
     </option>
   </component>
