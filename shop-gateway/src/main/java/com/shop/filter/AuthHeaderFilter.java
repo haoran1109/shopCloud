@@ -80,18 +80,12 @@ public class AuthHeaderFilter extends ZuulFilter {
 
 	private void doSomething(RequestContext requestContext) throws ZuulException {
 		HttpServletRequest request = requestContext.getRequest();
-		String requestURI = request.getRequestURI();
+//		String requestURI = request.getRequestURI();
 
 		/*if (OPTIONS.equalsIgnoreCase(request.getMethod()) || !requestURI.contains(AUTH_PATH) || !requestURI.contains(LOGOUT_URI) || !requestURI.contains(ALIPAY_CALL_URI)) {
 			return;
 		}*/
 		String authHeader = getAuthHeader(request);
-
-//		if (isEmpty(authHeader)) {
-//			throw new ZuulException("刷新页面重试", 403, "check token fail");
-//		}
-
-
 
 		if (authHeader.startsWith(BEARER_TOKEN_TYPE)) {
 			requestContext.addZuulRequestHeader(HttpHeaders.AUTHORIZATION, authHeader);
@@ -104,11 +98,7 @@ public class AuthHeaderFilter extends ZuulFilter {
 
 
 	public static String getAuthHeader(HttpServletRequest request) {
-
 		String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-//		if (org.apache.commons.lang.StringUtils.isEmpty(authHeader)) {
-//			throw new BusinessException(ErrorCodeEnum.UAC10011040);
-//		}
 		return authHeader;
 	}
 
