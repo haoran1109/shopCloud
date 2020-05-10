@@ -16,7 +16,6 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -97,18 +96,15 @@ public class TokenInterceptor implements HandlerInterceptor {
 		}
 		//API 包含注解无需登录
 		if (isHaveAccess(handler)) {
-			log.info("<== preHandle - API不需要认证.  token={}");
+			log.info("<== preHandle - API不需要认证");
 			return true;
 		}else{
 			String token = StringUtils.substringAfter(request.getHeader(HttpHeaders.AUTHORIZATION), "Bearer ");
-			if(StringUtils.isBlank(token)){
-				log.error("获取用户信息失败, 不允许操作");
-				return false;
-			}
 			Object obj=redisTemplate.opsForValue().get(RedisKeyUtil.getAccessTokenKey(token));
 			if (obj == null) {
+				//用户已经退出登录 或者是刷新了token后带着旧的token访问接口
 				log.error("获取用户信息失败, 不允许操作");
-				return false;
+				throw new BusinessException(ErrorCodeEnum.GL99990401);
 			}
 			Gson gson = new Gson();
 			LoginAuthDto loginUser=gson.fromJson(obj.toString(), LoginAuthDto.class);

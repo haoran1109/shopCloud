@@ -7,12 +7,17 @@ import com.base.exception.BusinessException;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 import java.util.Map;
 
@@ -28,6 +33,9 @@ public class AuthHeaderFilter extends ZuulFilter {
 	private static final String LOGOUT_URI = "/oauth/token";
 	private static final String ALIPAY_CALL_URI = "/pay/alipayCallback";
 	public static final String HEADER_LABEL = "x-label";
+
+	@Autowired
+	JwtTokenStore jwtTokenStore;
 
 
 	/**
@@ -80,16 +88,23 @@ public class AuthHeaderFilter extends ZuulFilter {
 
 	private void doSomething(RequestContext requestContext) throws ZuulException {
 		HttpServletRequest request = requestContext.getRequest();
-//		String requestURI = request.getRequestURI();
+		String requestURI = request.getRequestURI();
 
-		/*if (OPTIONS.equalsIgnoreCase(request.getMethod()) || !requestURI.contains(AUTH_PATH) || !requestURI.contains(LOGOUT_URI) || !requestURI.contains(ALIPAY_CALL_URI)) {
-			return;
-		}*/
+		//无需认证的URL
+//		if (OPTIONS.equalsIgnoreCase(request.getMethod()) || !requestURI.contains(AUTH_PATH) || !requestURI.contains(LOGOUT_URI) || !requestURI.contains(ALIPAY_CALL_URI)) {
+//			return;
+//		}
+		//如果传了token 则判断过期时间，没过期则继续传递给下游服务
 		String authHeader = getAuthHeader(request);
-
 		if (authHeader.startsWith(BEARER_TOKEN_TYPE)) {
+			String token = StringUtils.substringAfter(authHeader, "Bearer ");
+			OAuth2AccessToken oAuth2AccessToken = jwtTokenStore.readAccessToken(token);
+			int expiresIn = oAuth2AccessToken.getExpiresIn();
+			//token不为空 且已经过期
+			if (expiresIn < 0) {
+				throw  new BusinessException(ErrorCodeEnum.UAC10011041);
+			}
 			requestContext.addZuulRequestHeader(HttpHeaders.AUTHORIZATION, authHeader);
-
 			log.info("authHeader={} ", authHeader);
 			// 传递给后续微服务
 			requestContext.addZuulRequestHeader(HEADER_LABEL, authHeader);
