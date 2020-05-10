@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 
@@ -40,7 +41,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 	@Resource
 	private RedisTemplate<String, Object> redisTemplate;
 
-	private static final String OPTIONS = "OPTIONS";
+	private static final String CODE_SMS = "/code/sms";
 	private static final String AUTH_PATH1 = "/auth";
 	private static final String AUTH_PATH2 = "/oauth";
 	private static final String AUTH_PATH3 = "/error";
@@ -58,10 +59,10 @@ public class TokenInterceptor implements HandlerInterceptor {
 	 */
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object arg2, Exception ex) throws Exception {
-//		if (ex != null) {
-//			log.error("<== afterCompletion - 解析token失败. ex={}", ex.getMessage(), ex);
-//			this.handleException(response);
-//		}
+		if (ex != null) {
+			log.error("<== afterCompletion - 解析token失败. ex={}", ex.getMessage(), ex);
+			this.handleException(response);
+		}
 	}
 
 	/**
@@ -89,36 +90,31 @@ public class TokenInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		String uri = request.getRequestURI();
 		log.info("<== preHandle - 权限拦截器.  url={}", uri);
-
-		if (uri.contains("/code/sms")) {
+		if (uri.contains(AUTH_PATH1) || uri.contains(AUTH_PATH2) || uri.contains(AUTH_PATH3)
+				|| uri.contains(AUTH_PATH4)  || uri.contains(CODE_SMS) ) {
 			log.info("<== preHandle - 配置URL不走认证.  url={}", uri);
 			return true;
 		}
-
-		if (uri.contains(AUTH_PATH1) || uri.contains(AUTH_PATH2) || uri.contains(AUTH_PATH3) || uri.contains(AUTH_PATH4)) {
-			log.info("<== preHandle - 配置URL不走认证.  url={}", uri);
-			return true;
-		}
-
+		//API 包含注解无需登录
 		if (isHaveAccess(handler)) {
-			log.info("<== preHandle - 不需要认证注解不走认证.  token={}");
+			log.info("<== preHandle - API不需要认证.  token={}");
+			return true;
+		}else{
+			String token = StringUtils.substringAfter(request.getHeader(HttpHeaders.AUTHORIZATION), "Bearer ");
+			if(StringUtils.isBlank(token)){
+				log.error("获取用户信息失败, 不允许操作");
+				return false;
+			}
+			Object obj=redisTemplate.opsForValue().get(RedisKeyUtil.getAccessTokenKey(token));
+			if (obj == null) {
+				log.error("获取用户信息失败, 不允许操作");
+				return false;
+			}
+			Gson gson = new Gson();
+			LoginAuthDto loginUser=gson.fromJson(obj.toString(), LoginAuthDto.class);
+			ThreadLocalMap.put(GlobalConstant.Sys.TOKEN_AUTH_DTO, loginUser);
 			return true;
 		}
-
-		String token = StringUtils.substringAfter(request.getHeader(HttpHeaders.AUTHORIZATION), "Bearer ");
-		if(StringUtils.isBlank(token)){
-			log.error("获取用户信息失败, 不允许操作");
-			throw new BusinessException(ErrorCodeEnum.GL99990401);
-		}
-        Object obj=redisTemplate.opsForValue().get(RedisKeyUtil.getAccessTokenKey(token));
-		if (obj == null) {
-			log.error("获取用户信息失败, 不允许操作");
-			return false;
-		}
-		Gson gson = new Gson();
-		LoginAuthDto loginUser=gson.fromJson(obj.toString(), LoginAuthDto.class);
-		ThreadLocalMap.put(GlobalConstant.Sys.TOKEN_AUTH_DTO, loginUser);
-		return true;
 	}
 
 	private boolean isHaveAccess(Object handler) {
@@ -130,14 +126,14 @@ public class TokenInterceptor implements HandlerInterceptor {
 		return responseBody != null;
 	}
 
-//	private void handleException(HttpServletResponse res) throws IOException {
-//		res.resetBuffer();
-//		res.setHeader("Access-Control-Allow-Origin", "*");
-//		res.setHeader("Access-Control-Allow-Credentials", "true");
-//		res.setContentType("application/json");
-//		res.setCharacterEncoding("UTF-8");
-//		res.getWriter().write("{\"code\":100009 ,\"message\" :\"解析token失败\"}");
-//		res.flushBuffer();
-//	}
+	private void handleException(HttpServletResponse res) throws IOException {
+		res.resetBuffer();
+		res.setHeader("Access-Control-Allow-Origin", "*");
+		res.setHeader("Access-Control-Allow-Credentials", "true");
+		res.setContentType("application/json");
+		res.setCharacterEncoding("UTF-8");
+		res.getWriter().write("{\"code\":100009 ,\"message\" :\"解析token失败\"}");
+		res.flushBuffer();
+	}
 }
   
