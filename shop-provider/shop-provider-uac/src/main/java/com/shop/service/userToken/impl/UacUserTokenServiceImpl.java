@@ -108,6 +108,13 @@ public class UacUserTokenServiceImpl implements UacUserTokenService {
 		params.put("username",loginName);
 		Admin admin = adminService.selectByUserName(params);
 		LoginAuthDto loginAuthDto = new LoginAuthDto(admin.getId(), admin.getUsername(), admin.getUsername(),0L, null);
+        //清除redis 中token登录用户信息
+        redisTemplate.delete(RedisKeyUtil.getAccessTokenKey(accessToken));
+        //清除对应的token
+        OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(accessToken);
+        if(null!=oAuth2AccessToken){
+            tokenStore.removeAccessToken(oAuth2AccessToken);
+        }
 		// 更新的token 保存对应的用户信息 并且返回给前端
 		this.saveUserToken(accessTokenNew, refreshTokenNew, loginAuthDto, request);
 		return token;
