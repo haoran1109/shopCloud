@@ -34,9 +34,6 @@ public class AuthHeaderFilter extends ZuulFilter {
 	private static final String ALIPAY_CALL_URI = "/pay/alipayCallback";
 	public static final String HEADER_LABEL = "x-label";
 
-	@Autowired
-	JwtTokenStore jwtTokenStore;
-
 
 	/**
 	 * Filter type string.
@@ -107,6 +104,9 @@ public class AuthHeaderFilter extends ZuulFilter {
 
 	public static String getAuthHeader(HttpServletRequest request) {
 		String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+		if(StringUtils.isBlank(authHeader)){
+			return "";
+		}
 		return authHeader;
 	}
 
