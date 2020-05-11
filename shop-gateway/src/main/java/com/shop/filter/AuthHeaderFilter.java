@@ -94,16 +94,9 @@ public class AuthHeaderFilter extends ZuulFilter {
 //		if (OPTIONS.equalsIgnoreCase(request.getMethod()) || !requestURI.contains(AUTH_PATH) || !requestURI.contains(LOGOUT_URI) || !requestURI.contains(ALIPAY_CALL_URI)) {
 //			return;
 //		}
-		//如果传了token 则判断过期时间，没过期则继续传递给下游服务
+		//如果传了token 则继续传递给下游服务
 		String authHeader = getAuthHeader(request);
 		if (authHeader.startsWith(BEARER_TOKEN_TYPE)) {
-			String token = StringUtils.substringAfter(authHeader, "Bearer ");
-			OAuth2AccessToken oAuth2AccessToken = jwtTokenStore.readAccessToken(token);
-			int expiresIn = oAuth2AccessToken.getExpiresIn();
-			//token不为空 且已经过期
-			if (expiresIn < 0) {
-				throw  new BusinessException(ErrorCodeEnum.UAC10011041);
-			}
 			requestContext.addZuulRequestHeader(HttpHeaders.AUTHORIZATION, authHeader);
 			log.info("authHeader={} ", authHeader);
 			// 传递给后续微服务
