@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -104,7 +105,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 			if (obj == null) {
 				//用户已经退出登录 或者是刷新了token后带着旧的token访问接口
 				log.error("获取用户信息失败, 不允许操作");
-				throw new BusinessException(ErrorCodeEnum.GL99990401);
+				throw new AccessDeniedException("无权访问");
 			}
 			Gson gson = new Gson();
 			LoginAuthDto loginUser=gson.fromJson(obj.toString(), LoginAuthDto.class);
