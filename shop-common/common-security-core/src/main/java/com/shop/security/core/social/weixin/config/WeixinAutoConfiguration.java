@@ -41,7 +41,11 @@ public class WeixinAutoConfiguration extends SocialAutoConfigurerAdapter {
 		return new WeixinConnectionFactory(weixinConfig.getProviderId(), weixinConfig.getAppId(),
 				weixinConfig.getAppSecret());
 	}
-	
+
+	/**
+	 * 绑定社交账号bean 返回视图
+	 * @return
+	 */
 	@Bean({"connect/weixinConnect", "connect/weixinConnected"})
 	@ConditionalOnMissingBean(name = "weixinConnectedView")
 	public View weixinConnectedView() {
