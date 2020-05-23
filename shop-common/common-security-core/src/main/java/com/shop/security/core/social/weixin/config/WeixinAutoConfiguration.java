@@ -45,7 +45,7 @@ public class WeixinAutoConfiguration extends SocialAutoConfigurerAdapter {
 	/**
 	 * 绑定社交账号bean 返回视图
 	 *
-	 * 绑定第三方账号 /connect/providerId 比如 /connect/weixin
+	 * 绑定第三方账号 /connect/providerId 比如 /connect/weixin 带上微信相关授权信息
 	 * 解绑绑第三方账号 /connect/providerId  方法换成DELETE
 	 *
 	 *
