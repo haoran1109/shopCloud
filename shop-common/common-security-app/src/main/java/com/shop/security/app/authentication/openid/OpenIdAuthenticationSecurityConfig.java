@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 /**
  *
- *
+ *第三方登录配置
  */
 @Component
 public class OpenIdAuthenticationSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {

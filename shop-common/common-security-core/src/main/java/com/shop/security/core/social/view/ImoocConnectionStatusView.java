@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 社交账号绑定状态视图
+ * 社交账号绑定状态视图:是否绑定
  *
  *
  */
