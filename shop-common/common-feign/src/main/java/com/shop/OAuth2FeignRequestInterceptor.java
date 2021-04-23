@@ -38,7 +38,7 @@ public class OAuth2FeignRequestInterceptor implements RequestInterceptor {
 				Enumeration<String> values = request.getHeaders(name);
 				while (values.hasMoreElements()) {
 					String value = values.nextElement();
-					System.out.println(name + "---" + value);
+					log.info("name:{} ,value:{}",name,value);
 					template.header(name, value);
 				}
 			}
