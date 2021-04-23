@@ -88,11 +88,14 @@ public class AuthHeaderFilter extends ZuulFilter {
 		String requestURI = request.getRequestURI();
 
 		//无需认证的URL
-//		if (OPTIONS.equalsIgnoreCase(request.getMethod()) || !requestURI.contains(AUTH_PATH) || !requestURI.contains(LOGOUT_URI) || !requestURI.contains(ALIPAY_CALL_URI)) {
-//			return;
-//		}
+		if (OPTIONS.equalsIgnoreCase(request.getMethod()) || !requestURI.contains(AUTH_PATH) || !requestURI.contains(LOGOUT_URI) || !requestURI.contains(ALIPAY_CALL_URI)) {
+			return;
+		}
 		//如果传了token 则继续传递给下游服务
 		String authHeader = getAuthHeader(request);
+		if (this.isEmpty(authHeader)) {
+			throw new ZuulException("刷新页面重试", 403, "check token fail");
+		}
 		if (authHeader.startsWith(BEARER_TOKEN_TYPE)) {
 			requestContext.addZuulRequestHeader(HttpHeaders.AUTHORIZATION, authHeader);
 			log.info("authHeader={} ", authHeader);
@@ -104,8 +107,8 @@ public class AuthHeaderFilter extends ZuulFilter {
 
 	public static String getAuthHeader(HttpServletRequest request) {
 		String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-		if(StringUtils.isBlank(authHeader)){
-			return "";
+		if (org.apache.commons.lang.StringUtils.isEmpty(authHeader)) {
+			throw new BusinessException(ErrorCodeEnum.UAC10011040);
 		}
 		return authHeader;
 	}
